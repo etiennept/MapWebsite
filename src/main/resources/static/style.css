@@ -1,0 +1,27 @@
+#map {
+    height: 600px;
+}
+#content{
+    float: left;
+    height: 150px;
+}
+#contain{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+#eeee {
+    display: flex;
+    flex-direction: column;
+}
+
+
+#popus {
+    display: flex;
+    flex-direction: column;
+}
