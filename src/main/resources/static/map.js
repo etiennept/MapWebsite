@@ -37,7 +37,7 @@ function loadMap(){
         map = onmap(1, 23.9, 30.9, "Openstreetmap")
     }
 
-    map.getCenterR = ()=> {
+    map.getCenterLatLng = ()=> {
         let zoom = map.getZoom( )
         let center = map.getCenter()
         if (zoom <= 1) {
@@ -56,19 +56,19 @@ function loadMap(){
             throw Error("eeeeeee")
         }
     }
-    map.changeUrl = () => {
-        let a = map.getCenterR()
-        window.location.hash = "map=" + map.getZoom().toString() + "/" +  a.lat + "/" + a.lng  + "/" +map.baseLayer;
+    map.changeUrl = (latlng  ) => {
+        window.location.hash = "map=" + map.getZoom().toString() + "/" +  latlng.lat + "/" + latlng.lng  + "/" +map.baseLayer;
         history.pushState(null, null, window.location)
     }
-    map.ZoomCenterCookie=()=>{
+    map.ZoomCenterCookie=(latlng )=>{
         localStorage.setItem("zoom", map.getZoom().toString() )
-        localStorage.setItem("centerlat", map .getCenterR().lat.toString())
-        localStorage.setItem("centerlng", map.getCenterR().lng.toString())
+        localStorage.setItem("centerlat",latlng.lat.toString())
+        localStorage.setItem("centerlng", latlng.lng.toString())
     }
     let eeetttt=(e) => {
-        e.target.ZoomCenterCookie()
-        e.target.changeUrl()
+        let latlng = e.target.getCenterLatLng()
+        e.target.ZoomCenterCookie(latlng )
+        e.target.changeUrl(latlng )
     }
 
     /*map.addControl(L.control.leftTopControl({ position: 'topleft' }))
@@ -77,9 +77,9 @@ function loadMap(){
     map.on("zoomend", eeetttt );
     map.on("moveend", eeetttt) ;
     map.on("baselayerchange", (data) => {
-        this.baseLayer = data.name
+        data.target.baseLayer = data.name
         localStorage.setItem("baselayer", data.name)
-        changeUrl()
+        data.target.changeUrl( data.target.getCenterLatLng()  )
     });
     return map
 }
