@@ -1,57 +1,20 @@
 
 
-
-loadMap()
-/*function centerMap(popup){
-    var  a = L.DomUtil.create("input")
-    a.type = "button"
-    a.value = "Center here"
-    L.DomEvent.on( a  , "click"  , function (){
-        map.panTo(popup.getLatLng());
-        popup.remove();
-    })
-    popup.parent.appendChild(a)
-
+let eeetttt=(event) => {
+    let latlng = event.target.getCenterLatLng( )
+    event.target.ZoomCenterCookie(latlng)
+    event.target.changeUrl( latlng)
+    event.target.popup.removeFrom(event.target )
 }
 
-
-function displayControlAddress(popup){
-    var a = L.DomUtil.create("input")
-    a.type = "button"
-    a.value = "show adress and Coordonnate"
-    L.DomEvent.on( a  , "click"  , function (){
-        let x =popup.getLatLng()
-        x.recharge()
-        request.getAddress( x  ,
-            function (text){
-                if ( text === "{\"error\":\"Unable to geocode\"}"){
-                    control.onDisplayAdrress(x , "No address found")
-                } else {
-                    a = JSON.parse(text)
-                    let features = a[ "features" ]
-                    let b = features[0]
-                    let properties= b["properties"]
-                    console.log(properties)
-                    let geocoding =properties["geocoding"]
-                    let label = geocoding["label"]
-                    control.onDisplayAdrress(x , label)
-                }
-            }
-        )
-    })
-    popup.parent.appendChild(a)
-}
-
-let popup = L.popup();
-popup.parent  = L.DomUtil.create("div")
-popup.parent.class = "popus"
-centerMap(popup)
-displayControlAddress(popup)
-function onMapclick(e) {
-    popup
-        .setLatLng(e.latlng)
-        .openOn(map)
-        .setContent(popup.parent)
-}
-map.on('contextmenu', onMapclick);
-*/
+map.on("zoomend", eeetttt);
+map.on("moveend", eeetttt) ;
+map.on("baselayerchange", (data) => {
+    data.target.baseLayer = data.name
+    localStorage.setItem("baselayer", data.name)
+    data.target.changeUrl( data.target.getCenterLatLng( )  )
+});
+/*map.leftControlfunc( ) */
+map.on('contextmenu', (e)=>{
+    e.target.popup.func(e.latlng)
+});

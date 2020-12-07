@@ -2,6 +2,7 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         <meta charset="UTF-8">
+        <meta name="google-site-verification" content="gQY1Pt24TpajLnIaZk_wJednYNZSRLFN50kkDEzjPwM" />
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
               integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
               crossorigin=""/>
@@ -21,8 +22,9 @@
         <a href="/login">Login</a>
         <a href="/support"> support the development of this website</a>
         <div id="map"></div>
-
-        <script src="/static/map.js" >  </script>
+        <script src="/static/map.js"></script>
+        <script src="/static/control.js"></script>
+        <script src="/static/popup.js"></script>
         <script src="/static/main.js"></script>
 
 

@@ -17,8 +17,5 @@
         </div>
             <script data-ad-client="ca-pub-2644064982960397" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         </div>
-        <div>
-            <a target="_blank" href="https://www.amazon.fr/b?_encoding=UTF8&tag=etiennet-21&linkCode=ur2&linkId=60f85be9a1612c87fcd6879efb2cd9ea&camp=1642&creative=6746&node=14524086031"> software lang and travel </a><img src="//ir-fr.amazon-adsystem.com/e/ir?t=etiennet-21&l=ur2&o=8" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-        </div>
     </body>
 </html>

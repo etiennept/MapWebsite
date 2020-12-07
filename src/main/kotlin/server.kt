@@ -1,5 +1,8 @@
 import freemarker.cache.ClassTemplateLoader
 import io.ktor.application.*
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.request.*
 import io.ktor.freemarker.*
 import io.ktor.html.respondHtml
 import io.ktor.http.HttpStatusCode
@@ -37,6 +40,7 @@ val mapDatabase = Database.connect("jdbc:sqlite:map.sqlite", "org.sqlite.JDBC")
 
 
 fun main() {
+    val client = HttpClient(CIO)
     TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
     transaction(mapDatabase) {
         SchemaUtils.create(Users)
@@ -50,9 +54,11 @@ fun main() {
             static("/static") {
                 resources("static")
             }
-
             get("/") {
-                call.respond(FreeMarkerContent("main.ftl", mapOf("" to ""), ""))
+
+                call.request.cookies.get("userEmail")?.let {
+                    call.respond(FreeMarkerContent("session.ftl", mapOf("" to "")))
+                } ?: call.respond(FreeMarkerContent("main.ftl", mapOf("" to ""), ""))
             }
             route("/login") {
                 get() {
@@ -61,18 +67,14 @@ fun main() {
                 post {
                     val a = call.receiveParameters()
                     val user = UserLogin(a["email"]!!, a["password"]!!)
-                    try {
-                        val x = transaction(mapDatabase) {
-                            return@transaction Users.select { Users.email eq user.email }.map { it[Users.password] }
-                        }
-                        if (x.any { it == user.password }) {
-                            call.response.cookies.append("userEmail", user.email)
-                            call.respondRedirect("/session", permanent = false)
-                        } else {
-                            call.respond(loginHtml(user))
-                        }
-                    } catch (e: Exception) {
-                        println(e.message)
+                    val x = transaction(mapDatabase) {
+                        return@transaction Users.select { Users.email eq user.email }.map { it[Users.password] }
+                    }
+                    if (x.any { it == user.password }) {
+                        call.response.cookies.append("userEmail", user.email)
+                        call.respondRedirect("/", permanent = false)
+                    } else {
+                        call.respond(loginHtml(user))
                     }
                 }
             }
@@ -105,10 +107,13 @@ fun main() {
                     }
                 }
             }
+            get("/getAddress/lat={lat}/lng={lng}"){
+                val lat= call.parameters["lat"]
+                val lng = call.parameters["lng"]
+                call.respond( client.get<String>("https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}" ) )
+            }
             get("/session") {
-                call.request.cookies.get("userEmail")?.let {
-                    call.respond(FreeMarkerContent("session.ftl", mapOf("" to "")))
-                }
+                call.respond("eeeeeeeee")
             }
         }
     }.start(wait = true)

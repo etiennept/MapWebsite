@@ -16,8 +16,8 @@
         <div id="map"></div>
         <script src="/static/map.js"></script>
         <script src="/static/control.js"></script>
-        <script src="/static/session.js"></script>
-        <a href="/">Log out</a>
+        <script src="">    </script>
+        <a href="/logOut ">Log out</a>
         <script src ="/static/request.js"></script>
     </body>
 </html>

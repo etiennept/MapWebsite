@@ -1,25 +1,3 @@
-L.Control.LeftTopControl = L.Control.extend({
-    htmlnode : L.DomUtil.create('div') ,
-    onAdd:  (map) => {
-        this.htmlnode.id = "contain"
-        return this.htmlnode
-    },
-
-    onRemove:  (map) =>{
-        L.DomUtil.remove(this.htmlnode)
-    },
-    onDisplayAddress :  ( latlng , address) =>{
-        this.onRemoveView()
-        displayAddress(this.htmlnode , latlng , address )
-    },
-    onRemoveView :() => {
-        this.htmlnode.innerHTML= ""
-    }
-
-});
-L.control.leftTopControl= function(opts) {
-    return new L.Control.LeftTopControl(opts);
-}
 L.Control.MapControl  = L.Control.extend({
     onAdd(map){
 
@@ -28,21 +6,53 @@ L.Control.MapControl  = L.Control.extend({
 
     }
 })
+L.Control.LeftTopControl = L.Control.extend({
+    onAdd: (map) => {
+        this.htmlNode = L.DomUtil.create('div')
+        this.htmlNode.id = "contain"
+        this.htmlNode.rrr = () =>{
+            console.log("eeeee")
+        }
+        this.resulse = L.DomUtil.create('div')
+        this.resulse.new=() =>{ this.resulse.innerHTML = ""}
+        this.resulse.quit=() =>{
+            let quit = L.DomUtil.create('button'  )
+            quit.text = "quit "
+            L.DomEvent.on( quit , "click"  , () =>{
+                this.resulse.new()
+            })
+            this.resulse.appendChild(quit)
+        }
+        let field = L.DomUtil.create('div')
+        let input = L.DomUtil.create('input')
+        let buttonField = L.DomUtil.create('button')
+        field.appendChild(input)
+        field.appendChild(buttonField)
+        this.htmlNode.appendChild(field)
+        this.htmlNode.appendChild(resulse)
+        input.event=()=>{  }
+        buttonField.event =()=>{ }
+        L.DomEvent.on( input , "keypress"  , (event) => {
+           if(event.key === "Enter" ) {
+               event.target.event( )
+           }
+        } )
+        L.DomEvent.on( buttonField , "click"  , ( event ) =>{
+           event .target.event()
+        })
+        if(map.data !==null ){
 
+        }
+        return this.htmlNode
+    },
+    onRemove:(map) =>{
+        L.DomUtil.remove(this.htmlNode)
+    } ,
+    onDisplay(map){
 
-function displayAddress( parent , latlng , address ){
-    var htmlCoordinnate = L.DomUtil.create('span')
-    htmlCoordinnate.innerHTML = latlng.lat +" , "+ latlng.lng
-    parent.appendChild(htmlCoordinnate)
-    var htmlAddress = L.DomUtil.create('span')
-    htmlAddress.innerHTML = address
-    parent.appendChild(htmlAddress)
-    var button = L.DomUtil.create("input")
-    button.type='button'
-    button.value='exit'
-    button.id = 'exit'
-    L.DomEvent.on( button ,  "click" ,  function (   ){
-        parent.innerHTML = ""
-    })
-    parent.appendChild(button)
-}
+    }
+})
+
+map.topLeftControl = new L.Control.LeftTopControl({ position: 'topleft' })
+map.addControl(map.topLeftControl)
+map.addControl(L.control.zoom( {  position: 'topright'}))
